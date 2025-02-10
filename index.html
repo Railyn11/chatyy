@@ -10,7 +10,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-    
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAzVgIp0yEhNoJ84_dTmxwswo6zYlYmFVo",
@@ -21,63 +21,45 @@
             messagingSenderId: "760555784545",
             appId: "1:760555784545:web:3d4024cb91ca33499d5d20"
         };
-    
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
-    
+
         // Sign Up Function
         window.signUp = function () {
             const email = document.getElementById("signupEmail").value;
             const password = document.getElementById("signupPassword").value;
-    
+
             createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    alert("User registered successfully!");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
         };
-    
+
         // Login Function
         window.login = function () {
             const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
-    
+
             signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    alert("Login successful!");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
         };
-    
+
         // Logout Function
         window.logout = function () {
             signOut(auth)
-                .then(() => {
-                    alert("Logged out successfully!");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
         };
-    
+
         // Send Message Function
         window.sendMessage = function () {
             const input = document.getElementById("messageInput");
             const messageText = input.value.trim();
             const user = auth.currentUser;
-    
+
             if (!user) {
                 alert("Please log in to send messages.");
                 return;
             }
             if (messageText === "") return;
-    
+
             push(ref(database, "messages"), {
                 text: messageText,
                 timestamp: Date.now(),
@@ -86,31 +68,33 @@
                 input.value = "";
             }).catch(error => console.error("Error sending message: ", error));
         };
-    
+
         // Listen for new messages
         function loadMessages() {
+            const messagesContainer = document.getElementById("messages");
+            messagesContainer.innerHTML = ""; // Clear messages to prevent duplication
+
             onChildAdded(ref(database, "messages"), (snapshot) => {
                 const messageData = snapshot.val();
-                const messagesContainer = document.getElementById("messages");
                 const user = auth.currentUser;
-    
+
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message");
-    
+
                 if (user && messageData.sender === user.uid) {
                     messageElement.classList.add("sent");
                 } else {
                     messageElement.classList.add("received");
                 }
-    
+
                 messageElement.textContent = messageData.text; // Show only the message text
                 messagesContainer.appendChild(messageElement);
-    
+
                 // Scroll to the latest message
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             });
         }
-    
+
         // Handle authentication state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -124,39 +108,46 @@
                 console.log("No user is signed in.");
             }
         });
-    
-    </script>
 
+    </script>
 
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #fdf8f8;
+            background-image: url('https://i.pinimg.com/originals/a8/f5/31/a8f5319b3f68add689879fe7fd1494bf.jpg'); /* Replace with a direct URL */
+            background-size: cover;
+            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
         }
+
         .container {
             width: 400px;
-            background: white;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 10px;
             margin-bottom: 20px;
             text-align: center;
+            h3 {
+    color: white;
+}
         }
+
         .messages {
             height: 300px;
             overflow-y: auto;
-            border: 1px solid #ccc;
+            border: 3px solid #faf7f7;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
         }
+
         .message {
             padding: 10px;
             margin: 5px;
@@ -164,26 +155,33 @@
             max-width: 70%;
             word-wrap: break-word;
         }
+
         .sent {
             background-color: #DCF8C6;
             align-self: flex-end;
         }
+
         .received {
             background-color: #EAEAEA;
             align-self: flex-start;
         }
+
         input, button {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #fcf8f8;
         }
+
         button {
             background: #007bff;
             color: white;
             cursor: pointer;
             border: none;
+            
+
+
         }
     </style>
 </head>
@@ -204,7 +202,7 @@
 
     <!-- Chat Section -->
     <div class="container" id="chatContainer" style="display:none;">
-        <h3>Gossip Group Chat </h3>
+        <h3>Gossip Chat Group</h3>
         <div class="messages" id="messages"></div>
         <input type="text" id="messageInput" placeholder="Type a message...">
         <button onclick="sendMessage()">Send</button>
