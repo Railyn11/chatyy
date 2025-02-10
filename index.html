@@ -189,32 +189,27 @@
 </head>
 <body>
 
- <!-- Authentication Section -->
-<div class="container" id="authContainer">
-    <h3>Sign Up</h3>
-    <input type="text" id="signupNickname" placeholder="Enter Nickname">
-    <input type="email" id="signupEmail" placeholder="Enter Email">
-    <input type="password" id="signupPassword" placeholder="Enter Password">
-    <button onclick="signUp()">Sign Up</button>
+    <!-- Authentication Section -->
+    <div class="container" id="authContainer">
+        <h3>Sign Up</h3>
+        <input type="email" id="signupEmail" placeholder="Enter Email">
+        <input type="password" id="signupPassword" placeholder="Enter Password">
+        <button onclick="signUp()">Sign Up</button>
 
-    <h3>Login</h3>
-    <input type="text" id="loginNickname" placeholder="Enter Nickname">
-    <input type="email" id="loginEmail" placeholder="Enter Email">
-    <input type="password" id="loginPassword" placeholder="Enter Password">
-    <button onclick="login()">Login</button>
-</div>
+        <h3>Login</h3>
+        <input type="email" id="loginEmail" placeholder="Enter Email">
+        <input type="password" id="loginPassword" placeholder="Enter Password">
+        <button onclick="login()">Login</button>
+    </div>
 
-<!-- Chat Section -->
-<div class="container" id="chatContainer" style="display:none;">
-    <h3>Chat Room</h3>
-    <p>Welcome, <span id="userNickname"></span>!</p>
-    <div class="messages" id="messages"></div>
-    <input type="text" id="messageInput" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
-    <button onclick="logout()">Logout</button>
-</div>
-
-
+    <!-- Chat Section -->
+    <div class="container" id="chatContainer" style="display:none;">
+        <h3>Chat Room</h3>
+        <div class="messages" id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="logout()">Logout</button>
+    </div>
 
 </body>
 </html>
